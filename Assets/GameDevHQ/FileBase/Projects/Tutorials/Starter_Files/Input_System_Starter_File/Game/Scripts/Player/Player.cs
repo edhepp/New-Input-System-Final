@@ -22,6 +22,8 @@ namespace Game.Scripts.Player
         [SerializeField]
         private GameObject _model;
 
+        private PlayerInputActions _input;
+
 
         private void OnEnable()
         {
@@ -46,6 +48,16 @@ namespace Game.Scripts.Player
 
             if (_anim == null)
                 Debug.Log("Failed to connect the Animator");
+
+            _input = new PlayerInputActions();
+            _input.Player.Enable();
+            _input.Player.Movement.performed += Movement_performed;
+            
+        }
+
+        private void Movement_performed(UnityEngine.InputSystem.InputAction.CallbackContext context)
+        {
+            
         }
 
         private void Update()
@@ -57,6 +69,7 @@ namespace Game.Scripts.Player
 
         private void CalcutateMovement()
         {
+            /*
             _playerGrounded = _controller.isGrounded;
             float h = Input.GetAxisRaw("Horizontal");
             float v = Input.GetAxisRaw("Vertical");
@@ -66,7 +79,7 @@ namespace Game.Scripts.Player
             var direction = transform.forward * v;
             var velocity = direction * _speed;
 
-
+            
             _anim.SetFloat("Speed", Mathf.Abs(velocity.magnitude));
 
 
@@ -77,7 +90,18 @@ namespace Game.Scripts.Player
                 velocity.y += -20f * Time.deltaTime;
             }
             
-            _controller.Move(velocity * Time.deltaTime);                      
+            _controller.Move(velocity * Time.deltaTime);     
+            */
+            
+            var moveDirection = _input.Player.Movement.ReadValue<Vector2>();
+            var move = new Vector3(0, 0, moveDirection.y);
+            var velocity = moveDirection * _speed;
+
+            transform.Translate(move * _speed * Time.deltaTime);
+            transform.Rotate(Vector3.up, moveDirection.x);
+
+            _anim.SetFloat("Speed", Mathf.Abs(velocity.magnitude));
+
 
         }
 
