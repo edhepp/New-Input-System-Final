@@ -101,8 +101,6 @@ namespace Game.Scripts.Player
             transform.Rotate(Vector3.up, moveDirection.x);
 
             _anim.SetFloat("Speed", Mathf.Abs(velocity.magnitude));
-
-
         }
 
         private void InteractableZone_onZoneInteractionComplete(InteractableZone zone)
