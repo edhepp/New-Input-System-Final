@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
 using Game.Scripts.UI;
+using UnityEngine.InputSystem;
 
 namespace Game.Scripts.LiveObjects
 {
@@ -30,13 +31,22 @@ namespace Game.Scripts.LiveObjects
         public static event Action OnEnterFlightMode;
         public static event Action onExitFlightmode;
 
+        private PlayerInputActions _input;
+
         private void OnEnable()
         {
             InteractableZone.OnZoneInteractionComplete += EnterFlightMode;
         }
 
+        private void Start()
+        {
+            _input = new PlayerInputActions();
+        }
+
         private void EnterFlightMode(InteractableZone zone)
         {
+            _input.Player.Disable();
+            _input.Drone.Enable();
             if (_inFlightMode != true && zone.GetZoneID() == 4) // drone Scene
             {
                 _propAnim.SetTrigger("StartProps");
@@ -49,7 +59,9 @@ namespace Game.Scripts.LiveObjects
         }
 
         private void ExitFlightMode()
-        {            
+        {
+            _input.Drone.Disable();
+            _input.Player.Enable();
             _droneCam.Priority = 9;
             _inFlightMode = false;
             UIManager.Instance.DroneView(false);            
@@ -80,13 +92,13 @@ namespace Game.Scripts.LiveObjects
 
         private void CalculateMovementUpdate()
         {
-            if (Input.GetKey(KeyCode.LeftArrow))
+            if (/*Input.GetKey(KeyCode.LeftArrow)*/Keyboard.current.aKey.isPressed)
             {
                 var tempRot = transform.localRotation.eulerAngles;
                 tempRot.y -= _speed / 3;
                 transform.localRotation = Quaternion.Euler(tempRot);
             }
-            if (Input.GetKey(KeyCode.RightArrow))
+            if (/*Input.GetKey(KeyCode.RightArrow)*/Keyboard.current.dKey.isPressed)
             {
                 var tempRot = transform.localRotation.eulerAngles;
                 tempRot.y += _speed / 3;
@@ -97,11 +109,11 @@ namespace Game.Scripts.LiveObjects
         private void CalculateMovementFixedUpdate()
         {
             
-            if (Input.GetKey(KeyCode.Space))
+            if (/*Input.GetKey(KeyCode.Space)*/Keyboard.current.spaceKey.isPressed)
             {
                 _rigidbody.AddForce(transform.up * _speed, ForceMode.Acceleration);
             }
-            if (Input.GetKey(KeyCode.V))
+            if (/*Input.GetKey(KeyCode.V)*/Keyboard.current.vKey.isPressed)
             {
                 _rigidbody.AddForce(-transform.up * _speed, ForceMode.Acceleration);
             }
@@ -109,14 +121,18 @@ namespace Game.Scripts.LiveObjects
 
         private void CalculateTilt()
         {
-            if (Input.GetKey(KeyCode.A)) 
+            if (/*Input.GetKey(KeyCode.A)*/Keyboard.current.aKey.isPressed) 
                 transform.rotation = Quaternion.Euler(00, transform.localRotation.eulerAngles.y, 30);
-            else if (Input.GetKey(KeyCode.D))
+
+            else if (/*Input.GetKey(KeyCode.D)*/Keyboard.current.dKey.isPressed)
                 transform.rotation = Quaternion.Euler(0, transform.localRotation.eulerAngles.y, -30);
-            else if (Input.GetKey(KeyCode.W))
+
+            else if (/*Input.GetKey(KeyCode.W)*/Keyboard.current.wKey.isPressed)
                 transform.rotation = Quaternion.Euler(30, transform.localRotation.eulerAngles.y, 0);
-            else if (Input.GetKey(KeyCode.S))
+
+            else if (/*Input.GetKey(KeyCode.S)*/Keyboard.current.sKey.isPressed)
                 transform.rotation = Quaternion.Euler(-30, transform.localRotation.eulerAngles.y, 0);
+
             else 
                 transform.rotation = Quaternion.Euler(0, transform.localRotation.eulerAngles.y, 0);
         }
