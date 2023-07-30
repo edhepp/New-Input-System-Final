@@ -9,19 +9,17 @@ namespace Game.Scripts.LiveObjects
 {
     public class Laptop : MonoBehaviour
     {
-        [SerializeField]
-        private Slider _progressBar;
-        [SerializeField]
-        private int _hackTime = 5;
+        [SerializeField] private Slider _progressBar;
+        [SerializeField] private int _hackTime = 5;
         private bool _hacked = false;
-        [SerializeField]
-        private CinemachineVirtualCamera[] _cameras;
+        [SerializeField] private CinemachineVirtualCamera[] _cameras;
         private int _activeCamera = 0;
-        [SerializeField]
-        private InteractableZone _interactableZone;
+        [SerializeField] private InteractableZone _interactableZone;
 
         public static event Action onHackComplete;
         public static event Action onHackEnded;
+
+        private PlayerInputActions _input;
 
         private void OnEnable()
         {
@@ -29,19 +27,23 @@ namespace Game.Scripts.LiveObjects
             InteractableZone.onHoldEnded += InteractableZone_onHoldEnded;
         }
 
+        private void Start()
+        {
+            _input = new PlayerInputActions();
+            _input.Player.Enable();
+        }
+
         private void Update()
         {
             if (_hacked == true)
             {
-                if (Input.GetKeyDown(KeyCode.E))
+                if (/*Input.GetKeyDown(KeyCode.E)*/_input.Player.Interact.WasPressedThisFrame())
                 {
                     var previous = _activeCamera;
                     _activeCamera++;
 
-
                     if (_activeCamera >= _cameras.Length)
                         _activeCamera = 0;
-
 
                     _cameras[_activeCamera].Priority = 11;
                     _cameras[previous].Priority = 9;

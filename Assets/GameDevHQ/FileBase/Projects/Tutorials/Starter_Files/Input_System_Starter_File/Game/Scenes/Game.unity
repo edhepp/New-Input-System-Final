@@ -3269,7 +3269,7 @@ MonoBehaviour:
   _displayMessage: Break the Crate
   _zoneItems: []
   _inventoryIcon: {fileID: 21300000, guid: 88841726d7ebbfc46bf799ee1bfb7d3f, type: 3}
-  _zoneKeyInput: 101
+  _zoneKeyInput: 0
   _keyState: 0
   _marker: {fileID: 1808342870}
 --- !u!1001 &198573547
@@ -8653,7 +8653,7 @@ MonoBehaviour:
   _zoneItems:
   - {fileID: 758722189}
   _inventoryIcon: {fileID: 21300000, guid: 8e46bcb2f14d4d144b9e4a395b47efa2, type: 3}
-  _zoneKeyInput: 101
+  _zoneKeyInput: 0
   _keyState: 0
   _marker: {fileID: 605505802}
 --- !u!4 &482471386 stripped
@@ -10774,7 +10774,7 @@ MonoBehaviour:
   _displayMessage: Denotate C4
   _zoneItems: []
   _inventoryIcon: {fileID: 21300000, guid: 88841726d7ebbfc46bf799ee1bfb7d3f, type: 3}
-  _zoneKeyInput: 32
+  _zoneKeyInput: 0
   _keyState: 0
   _marker: {fileID: 1331263896}
 --- !u!1001 &565131287
@@ -18266,7 +18266,7 @@ MonoBehaviour:
   _displayMessage: Reset
   _zoneItems: []
   _inventoryIcon: {fileID: 0}
-  _zoneKeyInput: 101
+  _zoneKeyInput: 0
   _keyState: 0
   _marker: {fileID: 1578479318}
 --- !u!1 &967188505
@@ -25247,7 +25247,7 @@ MonoBehaviour:
   - {fileID: 474256985}
   - {fileID: 908574055}
   _inventoryIcon: {fileID: 21300000, guid: 81dff3a1ca824714aae965897edd2351, type: 3}
-  _zoneKeyInput: 101
+  _zoneKeyInput: 0
   _keyState: 0
   _marker: {fileID: 1583429342}
 --- !u!1001 &1178759240
@@ -26564,7 +26564,7 @@ MonoBehaviour:
   _displayMessage: Drive Forklift
   _zoneItems: []
   _inventoryIcon: {fileID: 21300000, guid: 88841726d7ebbfc46bf799ee1bfb7d3f, type: 3}
-  _zoneKeyInput: 101
+  _zoneKeyInput: 0
   _keyState: 0
   _marker: {fileID: 1840441541}
 --- !u!4 &1277958657 stripped
@@ -31271,7 +31271,6 @@ GameObject:
   - component: {fileID: 1550399102}
   - component: {fileID: 1550399101}
   - component: {fileID: 1550399106}
-  - component: {fileID: 1550399105}
   m_Layer: 0
   m_Name: Camera
   m_TagString: MainCamera
@@ -31379,18 +31378,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1550399105
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1550399100}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1550399106
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -36046,7 +36033,7 @@ MonoBehaviour:
   _displayMessage: Fly Drone
   _zoneItems: []
   _inventoryIcon: {fileID: 0}
-  _zoneKeyInput: 101
+  _zoneKeyInput: 0
   _keyState: 0
   _marker: {fileID: 1041737524}
 --- !u!1001 &1810757429
@@ -39798,7 +39785,7 @@ MonoBehaviour:
   _displayMessage: Hack Cameras
   _zoneItems: []
   _inventoryIcon: {fileID: 0}
-  _zoneKeyInput: 101
+  _zoneKeyInput: 0
   _keyState: 1
   _marker: {fileID: 55150249}
 --- !u!4 &2030128479 stripped

@@ -24,10 +24,9 @@ namespace Game.Scripts.Player
 
         private PlayerInputActions _input;
 
-
         private void OnEnable()
         {
-            InteractableZone.onZoneInteractionComplete += InteractableZone_onZoneInteractionComplete;
+            InteractableZone.OnZoneInteractionComplete += InteractableZone_onZoneInteractionComplete;
             Laptop.onHackComplete += ReleasePlayerControl;
             Laptop.onHackEnded += ReturnPlayerControl;
             Forklift.onDriveModeEntered += ReleasePlayerControl;
@@ -51,20 +50,13 @@ namespace Game.Scripts.Player
 
             _input = new PlayerInputActions();
             _input.Player.Enable();
-            _input.Player.Movement.performed += Movement_performed;
-            
-        }
-
-        private void Movement_performed(UnityEngine.InputSystem.InputAction.CallbackContext context)
-        {
-            
         }
 
         private void Update()
         {
+            Debug.Log(_input.Player.Interact.ReadValue<float>());
             if (_canMove == true)
                 CalcutateMovement();
-
         }
 
         private void CalcutateMovement()
@@ -141,7 +133,7 @@ namespace Game.Scripts.Player
 
         private void OnDisable()
         {
-            InteractableZone.onZoneInteractionComplete -= InteractableZone_onZoneInteractionComplete;
+            InteractableZone.OnZoneInteractionComplete -= InteractableZone_onZoneInteractionComplete;
             Laptop.onHackComplete -= ReleasePlayerControl;
             Laptop.onHackEnded -= ReturnPlayerControl;
             Forklift.onDriveModeEntered -= ReleasePlayerControl;

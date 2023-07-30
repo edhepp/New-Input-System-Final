@@ -32,7 +32,7 @@ namespace Game.Scripts.LiveObjects
 
         private void OnEnable()
         {
-            InteractableZone.onZoneInteractionComplete += EnterFlightMode;
+            InteractableZone.OnZoneInteractionComplete += EnterFlightMode;
         }
 
         private void EnterFlightMode(InteractableZone zone)
@@ -123,7 +123,7 @@ namespace Game.Scripts.LiveObjects
 
         private void OnDisable()
         {
-            InteractableZone.onZoneInteractionComplete -= EnterFlightMode;
+            InteractableZone.OnZoneInteractionComplete -= EnterFlightMode;
         }
     }
 }

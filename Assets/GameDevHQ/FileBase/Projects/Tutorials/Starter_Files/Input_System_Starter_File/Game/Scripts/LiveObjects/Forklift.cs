@@ -25,7 +25,7 @@ namespace Game.Scripts.LiveObjects
 
         private void OnEnable()
         {
-            InteractableZone.onZoneInteractionComplete += EnterDriveMode;
+            InteractableZone.OnZoneInteractionComplete += EnterDriveMode;
         }
 
         private void EnterDriveMode(InteractableZone zone)
@@ -112,7 +112,7 @@ namespace Game.Scripts.LiveObjects
 
         private void OnDisable()
         {
-            InteractableZone.onZoneInteractionComplete -= EnterDriveMode;
+            InteractableZone.OnZoneInteractionComplete -= EnterDriveMode;
         }
 
     }
