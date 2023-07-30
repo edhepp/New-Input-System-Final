@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using Cinemachine;
+using UnityEngine.InputSystem;
 
 namespace Game.Scripts.LiveObjects
 {
@@ -23,13 +24,22 @@ namespace Game.Scripts.LiveObjects
         public static event Action onDriveModeEntered;
         public static event Action onDriveModeExited;
 
+        private PlayerInputActions _input;
+
         private void OnEnable()
         {
             InteractableZone.OnZoneInteractionComplete += EnterDriveMode;
         }
 
+        private void Start()
+        {
+            _input = new PlayerInputActions();
+        }
+
         private void EnterDriveMode(InteractableZone zone)
         {
+            _input.Player.Disable();
+            _input.Forklift.Enable();
             if (_inDriveMode !=true && zone.GetZoneID() == 5) //Enter ForkLift
             {
                 _inDriveMode = true;
@@ -42,6 +52,8 @@ namespace Game.Scripts.LiveObjects
 
         private void ExitDriveMode()
         {
+            _input.Forklift.Disable();
+            _input.Player.Enable();
             _inDriveMode = false;
             _forkliftCam.Priority = 9;            
             _driverModel.SetActive(false);
@@ -63,8 +75,15 @@ namespace Game.Scripts.LiveObjects
 
         private void CalcutateMovement()
         {
-            float h = Input.GetAxisRaw("Horizontal");
+            /*float h = Input.GetAxisRaw("Horizontal");
             float v = Input.GetAxisRaw("Vertical");
+            var direction = new Vector3(0, 0, v);
+            var velocity = direction * _speed;
+            */
+
+            float h = _input.Forklift.Movement.ReadValue<Vector2>().x;
+            float v = _input.Forklift.Movement.ReadValue<Vector2>().y;
+
             var direction = new Vector3(0, 0, v);
             var velocity = direction * _speed;
 
@@ -80,9 +99,9 @@ namespace Game.Scripts.LiveObjects
 
         private void LiftControls()
         {
-            if (Input.GetKey(KeyCode.R))
+            if (/*Input.GetKey(KeyCode.R)*/Keyboard.current.rKey.isPressed)
                 LiftUpRoutine();
-            else if (Input.GetKey(KeyCode.T))
+            else if (/*Input.GetKey(KeyCode.T)*/Keyboard.current.tKey.isPressed)
                 LiftDownRoutine();
         }
 
