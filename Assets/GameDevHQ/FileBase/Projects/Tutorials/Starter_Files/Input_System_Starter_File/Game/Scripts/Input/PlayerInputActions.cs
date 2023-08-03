@@ -44,6 +44,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""HoldInteract"",
+                    ""type"": ""Button"",
+                    ""id"": ""b62b4817-f7a7-4531-8e35-7598fde33604"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -106,10 +115,21 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""name"": """",
                     ""id"": ""1075daa1-011a-4e6c-af73-2ae1dd55967e"",
                     ""path"": ""<Keyboard>/e"",
-                    ""interactions"": """",
+                    ""interactions"": ""Tap,Hold(duration=2)"",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Interact"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""895280bc-129f-4a98-b861-a39b78efc5f8"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": ""Hold(duration=1.5)"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""HoldInteract"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -322,6 +342,54 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": true
                 }
             ]
+        },
+        {
+            ""name"": ""Crate"",
+            ""id"": ""a4bdb913-b182-4164-ac25-33c2c9dab7a1"",
+            ""actions"": [
+                {
+                    ""name"": ""Punch"",
+                    ""type"": ""Button"",
+                    ""id"": ""f0218880-5be7-4f34-ae72-a30b6c8acdf0"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SuperPunch"",
+                    ""type"": ""Button"",
+                    ""id"": ""151cee1f-5494-459e-9e0f-92e83542cd5e"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""2d0ed6a8-b593-4a2a-9e3c-e528c74cfcb8"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": ""Tap"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Punch"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d40fb638-a70b-4d46-8f5d-2db0ef6c8b7b"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": ""Hold(duration=2)"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SuperPunch"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -330,6 +398,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
         m_Player_Movement = m_Player.FindAction("Movement", throwIfNotFound: true);
         m_Player_Interact = m_Player.FindAction("Interact", throwIfNotFound: true);
+        m_Player_HoldInteract = m_Player.FindAction("HoldInteract", throwIfNotFound: true);
         // Drone
         m_Drone = asset.FindActionMap("Drone", throwIfNotFound: true);
         m_Drone_Movement = m_Drone.FindAction("Movement", throwIfNotFound: true);
@@ -337,6 +406,10 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_Forklift = asset.FindActionMap("Forklift", throwIfNotFound: true);
         m_Forklift_Movement = m_Forklift.FindAction("Movement", throwIfNotFound: true);
         m_Forklift_Forks = m_Forklift.FindAction("Forks", throwIfNotFound: true);
+        // Crate
+        m_Crate = asset.FindActionMap("Crate", throwIfNotFound: true);
+        m_Crate_Punch = m_Crate.FindAction("Punch", throwIfNotFound: true);
+        m_Crate_SuperPunch = m_Crate.FindAction("SuperPunch", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -400,12 +473,14 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private List<IPlayerActions> m_PlayerActionsCallbackInterfaces = new List<IPlayerActions>();
     private readonly InputAction m_Player_Movement;
     private readonly InputAction m_Player_Interact;
+    private readonly InputAction m_Player_HoldInteract;
     public struct PlayerActions
     {
         private @PlayerInputActions m_Wrapper;
         public PlayerActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
         public InputAction @Movement => m_Wrapper.m_Player_Movement;
         public InputAction @Interact => m_Wrapper.m_Player_Interact;
+        public InputAction @HoldInteract => m_Wrapper.m_Player_HoldInteract;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -421,6 +496,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Interact.started += instance.OnInteract;
             @Interact.performed += instance.OnInteract;
             @Interact.canceled += instance.OnInteract;
+            @HoldInteract.started += instance.OnHoldInteract;
+            @HoldInteract.performed += instance.OnHoldInteract;
+            @HoldInteract.canceled += instance.OnHoldInteract;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -431,6 +509,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Interact.started -= instance.OnInteract;
             @Interact.performed -= instance.OnInteract;
             @Interact.canceled -= instance.OnInteract;
+            @HoldInteract.started -= instance.OnHoldInteract;
+            @HoldInteract.performed -= instance.OnHoldInteract;
+            @HoldInteract.canceled -= instance.OnHoldInteract;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -548,10 +629,65 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         }
     }
     public ForkliftActions @Forklift => new ForkliftActions(this);
+
+    // Crate
+    private readonly InputActionMap m_Crate;
+    private List<ICrateActions> m_CrateActionsCallbackInterfaces = new List<ICrateActions>();
+    private readonly InputAction m_Crate_Punch;
+    private readonly InputAction m_Crate_SuperPunch;
+    public struct CrateActions
+    {
+        private @PlayerInputActions m_Wrapper;
+        public CrateActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Punch => m_Wrapper.m_Crate_Punch;
+        public InputAction @SuperPunch => m_Wrapper.m_Crate_SuperPunch;
+        public InputActionMap Get() { return m_Wrapper.m_Crate; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(CrateActions set) { return set.Get(); }
+        public void AddCallbacks(ICrateActions instance)
+        {
+            if (instance == null || m_Wrapper.m_CrateActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_CrateActionsCallbackInterfaces.Add(instance);
+            @Punch.started += instance.OnPunch;
+            @Punch.performed += instance.OnPunch;
+            @Punch.canceled += instance.OnPunch;
+            @SuperPunch.started += instance.OnSuperPunch;
+            @SuperPunch.performed += instance.OnSuperPunch;
+            @SuperPunch.canceled += instance.OnSuperPunch;
+        }
+
+        private void UnregisterCallbacks(ICrateActions instance)
+        {
+            @Punch.started -= instance.OnPunch;
+            @Punch.performed -= instance.OnPunch;
+            @Punch.canceled -= instance.OnPunch;
+            @SuperPunch.started -= instance.OnSuperPunch;
+            @SuperPunch.performed -= instance.OnSuperPunch;
+            @SuperPunch.canceled -= instance.OnSuperPunch;
+        }
+
+        public void RemoveCallbacks(ICrateActions instance)
+        {
+            if (m_Wrapper.m_CrateActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(ICrateActions instance)
+        {
+            foreach (var item in m_Wrapper.m_CrateActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_CrateActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public CrateActions @Crate => new CrateActions(this);
     public interface IPlayerActions
     {
         void OnMovement(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
+        void OnHoldInteract(InputAction.CallbackContext context);
     }
     public interface IDroneActions
     {
@@ -561,5 +697,10 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     {
         void OnMovement(InputAction.CallbackContext context);
         void OnForks(InputAction.CallbackContext context);
+    }
+    public interface ICrateActions
+    {
+        void OnPunch(InputAction.CallbackContext context);
+        void OnSuperPunch(InputAction.CallbackContext context);
     }
 }

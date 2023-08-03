@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using Game.Scripts.LiveObjects;
 using Cinemachine;
+using UnityEngine.InputSystem.Interactions;
+using UnityEngine.InputSystem;
+using TMPro.EditorUtilities;
 
 namespace Game.Scripts.Player
 {
@@ -54,9 +57,12 @@ namespace Game.Scripts.Player
 
         private void Update()
         {
-            Debug.Log(_input.Player.Interact.ReadValue<float>());
             if (_canMove == true)
                 CalcutateMovement();
+            if(_input.Crate.enabled == true)
+            {
+                Debug.Log("Crate enabled");
+            }
         }
 
         private void CalcutateMovement()

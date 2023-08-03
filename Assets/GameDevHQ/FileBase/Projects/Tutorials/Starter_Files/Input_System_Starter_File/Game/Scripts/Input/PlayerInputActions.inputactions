@@ -22,6 +22,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "HoldInteract",
+                    "type": "Button",
+                    "id": "b62b4817-f7a7-4531-8e35-7598fde33604",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -84,10 +93,21 @@
                     "name": "",
                     "id": "1075daa1-011a-4e6c-af73-2ae1dd55967e",
                     "path": "<Keyboard>/e",
-                    "interactions": "",
+                    "interactions": "Tap,Hold(duration=2)",
                     "processors": "",
                     "groups": "",
                     "action": "Interact",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "895280bc-129f-4a98-b861-a39b78efc5f8",
+                    "path": "<Keyboard>/e",
+                    "interactions": "Hold(duration=1.5)",
+                    "processors": "",
+                    "groups": "",
+                    "action": "HoldInteract",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
@@ -298,6 +318,54 @@
                     "action": "Forks",
                     "isComposite": false,
                     "isPartOfComposite": true
+                }
+            ]
+        },
+        {
+            "name": "Crate",
+            "id": "a4bdb913-b182-4164-ac25-33c2c9dab7a1",
+            "actions": [
+                {
+                    "name": "Punch",
+                    "type": "Button",
+                    "id": "f0218880-5be7-4f34-ae72-a30b6c8acdf0",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "SuperPunch",
+                    "type": "Button",
+                    "id": "151cee1f-5494-459e-9e0f-92e83542cd5e",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "2d0ed6a8-b593-4a2a-9e3c-e528c74cfcb8",
+                    "path": "<Keyboard>/e",
+                    "interactions": "Tap",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Punch",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d40fb638-a70b-4d46-8f5d-2db0ef6c8b7b",
+                    "path": "<Keyboard>/e",
+                    "interactions": "Hold(duration=2)",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SuperPunch",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         }
